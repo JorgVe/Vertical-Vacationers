@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De paklijst · Karwendel Höhenweg 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Overzicht</a>
+</div>
+
+<header class="page-header">
+  <div class="icon-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M8 8V6a4 4 0 0 1 8 0v2"/><rect x="4.5" y="8" width="15" height="13" rx="2.5"/><path d="M9 12v3M15 12v3"/></svg>
+  </div>
+  <div class="eyebrow">Voor vertrek</div>
+  <h1>De paklijst</h1>
+  <p>Vink af wat je hebt ingepakt — dit wordt per apparaat lokaal onthouden.</p>
+</header>
+
+<main class="page-main">
+
+  <div class="section-block">
+    <span class="check-group-title">Documenten & geld</span>
+    <ul class="checklist" id="list-docs">
+      <li class="check-item"><input type="checkbox" id="pk-id" data-key="id"><label for="pk-id">Identiteitskaart / paspoort</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-member" data-key="member"><label for="pk-member">Alpenvereins­lidmaatschap (DAV/ÖAV) — alle ledenprijzen gelden hiermee</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-cash" data-key="cash"><label for="pk-cash">Contant geld — niet elke hut pint even makkelijk</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-insurance" data-key="insurance"><label for="pk-insurance">Reis-/bergsportverzekering (kaart of app bij de hand)</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-vignet" data-key="vignet"><label for="pk-vignet">Oostenrijks snelwegvignet geregeld</label></li>
+    </ul>
+    <form class="add-item-row" onsubmit="event.preventDefault(); kwAddChecklistItem('list-docs','add-docs');">
+      <input type="text" class="add-item-input" id="add-docs" placeholder="Item toevoegen…">
+      <button type="submit">Toevoegen</button>
+    </form>
+  </div>
+
+  <div class="section-block">
+    <span class="check-group-title">Hut-essentials</span>
+    <ul class="checklist" id="list-hut">
+      <li class="check-item"><input type="checkbox" id="pk-sleepingbag" data-key="sleepingbag"><label for="pk-sleepingbag"><b>Hüttenslaapzak</b> (linnen) — verplicht op alle 3 hütten</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-earplugs" data-key="earplugs"><label for="pk-earplugs">Oordopjes (dormitory = meerdere mensen op een kamer)</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-hutslippers" data-key="hutslippers"><label for="pk-hutslippers">Lichte hutschoenen / slippers</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-towel" data-key="towel"><label for="pk-towel">Microvezel handdoekje</label></li>
+    </ul>
+    <form class="add-item-row" onsubmit="event.preventDefault(); kwAddChecklistItem('list-hut','add-hut');">
+      <input type="text" class="add-item-input" id="add-hut" placeholder="Item toevoegen…">
+      <button type="submit">Toevoegen</button>
+    </form>
+  </div>
+
+  <div class="section-block">
+    <span class="check-group-title">Kleding</span>
+    <ul class="checklist" id="list-clothes">
+      <li class="check-item"><input type="checkbox" id="pk-boots" data-key="boots"><label for="pk-boots">Stevige wandelschoenen (ingelopen!)</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-rain" data-key="rain"><label for="pk-rain">Regenjas / hardshell</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-fleece" data-key="fleece"><label for="pk-fleece">Warme laag (fleece/donsjas) — 's avonds op de hut is het fris</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-layers" data-key="layers"><label for="pk-layers">Wandelbroek + meerdere technische shirts</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-socks" data-key="socks"><label for="pk-socks">Wandelsokken (genoeg voor 5 dagen)</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-hat" data-key="hat"><label for="pk-hat">Muts + zonnehoed/pet</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-gloves" data-key="gloves"><label for="pk-gloves">Lichte handschoenen</label></li>
+    </ul>
+    <form class="add-item-row" onsubmit="event.preventDefault(); kwAddChecklistItem('list-clothes','add-clothes');">
+      <input type="text" class="add-item-input" id="add-clothes" placeholder="Item toevoegen…">
+      <button type="submit">Toevoegen</button>
+    </form>
+  </div>
+
+  <div class="section-block">
+    <span class="check-group-title">Uitrusting</span>
+    <ul class="checklist" id="list-gear">
+      <li class="check-item"><input type="checkbox" id="pk-backpack" data-key="backpack"><label for="pk-backpack">Backpack 30–40L</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-raincover" data-key="raincover"><label for="pk-raincover">Regenhoes voor de backpack</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-poles" data-key="poles"><label for="pk-poles">Wandelstokken</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-headlamp" data-key="headlamp"><label for="pk-headlamp">Hoofdlamp</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-powerbank" data-key="powerbank"><label for="pk-powerbank">Powerbank — geen stopcontacten op de hütten</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-bottle" data-key="bottle"><label for="pk-bottle">Waterfles / drinksysteem (min. 1,5L)</label></li>
+    </ul>
+    <form class="add-item-row" onsubmit="event.preventDefault(); kwAddChecklistItem('list-gear','add-gear');">
+      <input type="text" class="add-item-input" id="add-gear" placeholder="Item toevoegen…">
+      <button type="submit">Toevoegen</button>
+    </form>
+  </div>
+
+  <div class="section-block">
+    <span class="check-group-title">Gezondheid</span>
+    <ul class="checklist" id="list-health">
+      <li class="check-item"><input type="checkbox" id="pk-firstaid" data-key="firstaid"><label for="pk-firstaid">Kleine EHBO-kit + blaarpleisters</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-sunscreen" data-key="sunscreen"><label for="pk-sunscreen">Zonnebrand (hoge SPF, op hoogte brand je sneller)</label></li>
+      <li class="check-item"><input type="checkbox" id="pk-meds" data-key="meds"><label for="pk-meds">Persoonlijke medicatie</label></li>
+    </ul>
+    <form class="add-item-row" onsubmit="event.preventDefault(); kwAddChecklistItem('list-health','add-health');">
+      <input type="text" class="add-item-input" id="add-health" placeholder="Item toevoegen…">
+      <button type="submit">Toevoegen</button>
+    </form>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <b>Vertical Vacationers</b> · 16–23 augustus 2026
+</footer>
+
+<script src="script.js"></script>
+<script>
+  kwMarkVisited('packinglist');
+  ['list-docs','list-hut','list-clothes','list-gear','list-health'].forEach(kwInitChecklist);
+</script>
+</body>
+</html>

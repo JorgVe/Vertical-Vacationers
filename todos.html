@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De to do's · Karwendel Höhenweg 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Overzicht</a>
+</div>
+
+<header class="page-header">
+  <div class="icon-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 3.5V2.5h6v1"/><path d="M8.5 10l1.5 1.5L13 8.5M8.5 15l1.5 1.5 3-3"/></svg>
+  </div>
+  <div class="eyebrow">Nog te regelen</div>
+  <h1>De to do's</h1>
+  <p>Open beslissingen en actiepunten voor vertrek. Vink af wat gedaan is — lokaal per apparaat onthouden.</p>
+</header>
+
+<main class="page-main">
+
+  <div class="section-block">
+    <span class="check-group-title">Beslissen</span>
+    <ul class="checklist" id="list-decide">
+      <li class="check-item"><input type="checkbox" id="td-walk" data-key="walk"><label for="td-walk">Kiezen: Seebensee of Ferchensee voor de acclimatisatiedag (of Innsbruck als alternatief)</label></li>
+      <li class="check-item"><input type="checkbox" id="td-komoot" data-key="komoot"><label for="td-komoot">Kortere/dichterbij wandelopties checken op Komoot voor dag 1</label></li>
+      <li class="check-item"><input type="checkbox" id="td-drive" data-key="drive"><label for="td-drive">Vertrekpunt, tijd en chauffeurs voor de rit vastleggen (zie <a href="drive.html" style="color:var(--forest-2); font-weight:700;">De rit</a>)</label></li>
+      <li class="check-item"><input type="checkbox" id="td-prehotel" data-key="prehotel"><label for="td-prehotel">Beslissen of we een hotel boeken vóór de tocht</label></li>
+      <li class="check-item"><input type="checkbox" id="td-posthotel" data-key="posthotel"><label for="td-posthotel">Beslissen of we een hotel boeken na de tocht</label></li>
+    </ul>
+  </div>
+
+  <div class="section-block">
+    <span class="check-group-title">Boeken & regelen</span>
+    <ul class="checklist" id="list-book">
+      <li class="check-item"><input type="checkbox" id="td-member" data-key="member"><label for="td-member">Alpenvereins­lidmaatschap (DAV/ÖAV) checken/aanvragen — geeft korting op alle hütten</label></li>
+      <li class="check-item"><input type="checkbox" id="td-huts" data-key="huts"><label for="td-huts">Reservering Karwendelhaus, Falkenhütte en Lamsenjochhütte bevestigen</label></li>
+      <li class="check-item"><input type="checkbox" id="td-vignet" data-key="vignet"><label for="td-vignet">Oostenrijks snelwegvignet kopen</label></li>
+      <li class="check-item"><input type="checkbox" id="td-insurance" data-key="insurance"><label for="td-insurance">Reis-/bergsportverzekering afsluiten of checken</label></li>
+      <li class="check-item"><input type="checkbox" id="td-sleepingbag" data-key="sleepingbag"><label for="td-sleepingbag">Hüttenslaapzakken kopen/verzamelen (verplicht op alle 3 hütten)</label></li>
+    </ul>
+  </div>
+
+  <div class="section-block">
+    <span class="check-group-title">Voor vertrek nalezen</span>
+    <ul class="checklist" id="list-read">
+      <li class="check-item"><input type="checkbox" id="td-terms1" data-key="terms1"><label for="td-terms1">Voorwaarden & tarieven Karwendelhaus doornemen (PDF's)</label></li>
+      <li class="check-item"><input type="checkbox" id="td-terms2" data-key="terms2"><label for="td-terms2">Voorwaarden & tarieven Lamsenjochhütte doornemen (PDF's)</label></li>
+      <li class="check-item"><input type="checkbox" id="td-packlist" data-key="packlist"><label for="td-packlist">Paklijst samen doorlopen (zie <a href="packinglist.html" style="color:var(--forest-2); font-weight:700;">De paklijst</a>)</label></li>
+      <li class="check-item"><input type="checkbox" id="td-cash" data-key="cash"><label for="td-cash">Genoeg contant geld regelen — niet elke hut pint</label></li>
+    </ul>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <b>Vertical Vacationers</b> · 16–23 augustus 2026
+</footer>
+
+<script src="script.js"></script>
+<script>
+  kwMarkVisited('todos');
+  ['list-decide','list-book','list-read'].forEach(kwInitChecklist);
+</script>
+</body>
+</html>
