@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De wandeling · Karwendel Höhenweg 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .opt-cards{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:16px;}
+  .opt-card{background:var(--paper); border:1.5px solid var(--line); border-radius:14px; padding:20px; box-shadow:0 8px 18px rgba(20,20,10,.08);}
+  .opt-card h4{font-family:'Fraunces',serif; color:var(--forest); font-size:1.1rem;}
+  .opt-stats{display:flex; gap:18px; margin-top:10px;}
+  .opt-stats .num{font-family:'Fraunces',serif; font-weight:700; font-size:1.2rem; color:var(--red);}
+  .opt-stats .lab{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:#7a7362; font-weight:700;}
+  .opt-card a{display:inline-block; margin-top:12px; font-size:.82rem; font-weight:700; color:var(--forest-2); text-decoration:none; border-bottom:1.5px solid var(--gold-2);}
+  @media (max-width:700px){.opt-cards{grid-template-columns:1fr;}}
+
+  .day-summary{display:flex; gap:18px; margin-top:16px; align-items:stretch;}
+  .day-summary-photo{flex:0 0 200px; border-radius:14px; overflow:hidden; box-shadow:0 8px 18px rgba(20,20,10,.1);}
+  .day-summary-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .day-summary-stats{flex:1; display:grid; grid-template-columns:1fr 1fr; gap:14px; background:var(--paper); border:1.5px solid var(--line); border-radius:14px; padding:18px 22px;}
+  .day-summary--full .day-summary-stats{grid-template-columns:repeat(4,1fr);}
+  .day-summary-stats .num{font-family:'Fraunces',serif; font-weight:700; font-size:1.2rem; color:var(--red);}
+  .day-summary-stats .lab{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:#7a7362; font-weight:700;}
+  @media (max-width:700px){
+    .day-summary{flex-direction:column;}
+    .day-summary-photo{flex-basis:auto; height:160px;}
+    .day-summary--full .day-summary-stats{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Overzicht</a>
+</div>
+
+<header class="page-header">
+  <div class="icon-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 19l4-9 3 5 2-3 5 7"/><circle cx="8" cy="6" r="2"/><path d="M6.5 9.5L8 8l2 1.5-1.5 3"/></svg>
+  </div>
+  <div class="eyebrow">Scharnitz → Schwaz</div>
+  <h1>De wandeling</h1>
+  <p>Vier dagen wandelen van hut naar hut, met een acclimatisatiedag vooraf. De volledige routes per dag, met hoogteprofiel en tijdsinschatting — rechtstreeks van Komoot.</p>
+</header>
+
+<main class="page-main">
+
+  <div class="section-block">
+    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 0 · Maandag 17 augustus</span>
+    <h2 style="margin-top:12px;">Acclimatisatiedag</h2>
+    <p style="color:#5a5344; line-height:1.6;">Rustig inwandelen op hoogte voor we de hütten in trekken. Nog niet besloten welke route het wordt — twee opties liggen op tafel:</p>
+    <div class="opt-cards">
+      <div class="opt-card">
+        <h4>Seebensee</h4>
+        <div class="opt-stats">
+          <div><div class="num">9,7 km</div><div class="lab">Afstand</div></div>
+          <div><div class="num">402 m</div><div class="lab">Stijgen</div></div>
+        </div>
+        <a href="https://www.alltrails.com/trail/austria/tyrol/ehrwald-cable-car-to-seebensee" target="_blank" rel="noopener">Bekijk op AllTrails →</a>
+      </div>
+      <div class="opt-card">
+        <h4>Ferchensee</h4>
+        <div class="opt-stats">
+          <div><div class="num">10,6 km</div><div class="lab">Afstand</div></div>
+          <div><div class="num">474 m</div><div class="lab">Stijgen</div></div>
+        </div>
+        <a href="https://www.alltrails.com/trail/germany/bavaria/hoher-kranzberg-und-ferchensee-ab-mittenwald" target="_blank" rel="noopener">Bekijk op AllTrails →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 1 · Dinsdag 18 augustus</span>
+    <h2 style="margin-top:12px;">Naar Karwendelhaus</h2>
+    <p style="color:#5a5344; line-height:1.6;">De volledige route van vandaag, richting Karwendelhaus op 1.765 m.</p>
+    <div class="day-summary">
+      <div class="day-summary-photo"><img src="pictures/karwendelhaus.png" alt="Karwendelhaus"></div>
+      <div class="day-summary-stats">
+        <div><div class="num">15,5 km</div><div class="lab">Afstand</div></div>
+        <div><div class="num">650 m</div><div class="lab">Stijgen</div></div>
+        <div><div class="num">40 m</div><div class="lab">Dalen</div></div>
+        <div><div class="num">4u35</div><div class="lab">Tijd</div></div>
+      </div>
+    </div>
+    <div class="komoot-embed">
+      <iframe src="https://www.komoot.com/tour/3092174382/embed?share_token=aj9rI12AixGADKIpwTOmv3pwr8YVDVvqppGP7v3i8Op0CcoD2r&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" title="Wandelroute dag 1"></iframe>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 2 · Woensdag 19 augustus</span>
+    <h2 style="margin-top:12px;">Naar Falkenhütte</h2>
+    <p style="color:#5a5344; line-height:1.6;">De volledige route van vandaag, richting Falkenhütte op 1.848 m, voor de Laliderer Wände.</p>
+    <div class="day-summary">
+      <div class="day-summary-photo"><img src="pictures/falkenhutte.png" alt="Falkenhütte"></div>
+      <div class="day-summary-stats">
+        <div><div class="num">8,9 km</div><div class="lab">Afstand</div></div>
+        <div><div class="num">500 m</div><div class="lab">Stijgen</div></div>
+        <div><div class="num">410 m</div><div class="lab">Dalen</div></div>
+        <div><div class="num">3u19</div><div class="lab">Tijd</div></div>
+      </div>
+    </div>
+    <div class="komoot-embed">
+      <iframe src="https://www.komoot.com/tour/3092202368/embed?share_token=ahknapglo0RNVqBZ1hJ30JbaZk9NUjo5Y07dsrPgEUFiVocZT1&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" title="Wandelroute dag 2"></iframe>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 3 · Donderdag 20 augustus</span>
+    <h2 style="margin-top:12px;">Naar Lamsenjochhütte</h2>
+    <p style="color:#5a5344; line-height:1.6;">De hoogste etappe, richting Lamsenjochhütte op 1.953 m.</p>
+    <div class="day-summary">
+      <div class="day-summary-photo"><img src="pictures/lamsenjochhutte.png" alt="Lamsenjochhütte"></div>
+      <div class="day-summary-stats">
+        <div><div class="num">12,3 km</div><div class="lab">Afstand</div></div>
+        <div><div class="num">840 m</div><div class="lab">Stijgen</div></div>
+        <div><div class="num">730 m</div><div class="lab">Dalen</div></div>
+        <div><div class="num">4u53</div><div class="lab">Tijd</div></div>
+      </div>
+    </div>
+    <div class="komoot-embed">
+      <iframe src="https://www.komoot.com/tour/3092265991/embed?share_token=aH4PxTiLkE1MWzFs5vlJjFQaNa7i5nhrjSCP6x7iaVzVckSFTy&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" title="Wandelroute dag 3"></iframe>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 4 · Vrijdag 21 augustus</span>
+    <h2 style="margin-top:12px;">Naar Schwaz</h2>
+    <p style="color:#5a5344; line-height:1.6;">De laatste etappe: de afdaling van Lamsenjochhütte terug het Inntal in, naar Schwaz — het eindpunt van onze hüttentocht.</p>
+    <div class="day-summary day-summary--full">
+      <div class="day-summary-stats">
+        <div><div class="num">11,8 km</div><div class="lab">Afstand</div></div>
+        <div><div class="num">0 m</div><div class="lab">Stijgen</div></div>
+        <div><div class="num">1.410 m</div><div class="lab">Dalen</div></div>
+        <div><div class="num">4u05</div><div class="lab">Tijd</div></div>
+      </div>
+    </div>
+    <div class="komoot-embed">
+      <iframe src="https://www.komoot.com/tour/3092300373/embed?share_token=akOgeZmjjyuVLghE22BgNTVQ7q0emMssqiqU1SvfJzlqrm9FV0&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" title="Wandelroute dag 4"></iframe>
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <b>Vertical Vacationers</b> · 16–23 augustus 2026
+</footer>
+
+<script src="script.js"></script>
+<script>kwMarkVisited('hike');</script>
+</body>
+</html>
