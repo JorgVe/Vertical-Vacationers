@@ -14,15 +14,16 @@ Open `index.html` in je browser, of publiceer via GitHub Pages:
 ## Structuur
 
 ```
-index.html         Home — 6 klikbare tegels naar de onderwerpen
+index.html         Home — 5 klikbare pieken op de bergkam naar de onderwerpen
 drive.html          De rit
-timeline.html        De tijdlijn
 hotels.html          De hotels
 hike.html             De wandeling
 packinglist.html      De paklijst
 todos.html             De to do's
 styles.css            Gedeelde Tirol-stijl
-script.js             Bezocht-status (grijs tegel), checklists
+script.js             Bezocht-status (wandelaar op de kam), checklists, voortgang
+favicon.svg           Favicon (bergmarkering)
+og-image.png          Deelafbeelding (link preview)
 ```
 
 ## Hoe het werkt
@@ -35,5 +36,4 @@ script.js             Bezocht-status (grijs tegel), checklists
 ## Nog aan te vullen
 
 - `drive.html` — vertrekpunt, tijd, chauffeurs en route zijn nog placeholders.
-- `hotels.html` — eventueel hotel vóór en na de tocht zijn nog placeholders.
-- Foto's van de hütten en route komen momenteel van Wikimedia Commons (met CSS-fallback als een link ooit niet laadt). Vervang de `<img src="...">`-links gerust door eigen foto's zodra die beschikbaar zijn.
+- Foto's staan lokaal in `pictures/` als WebP (geoptimaliseerd). Wil je een foto vervangen, zet de nieuwe versie erin en werk de `<img>`-`width`/`height` bij.

@@ -68,6 +68,62 @@ function kwPlaceHiker() {
   hiker.classList.toggle('arrived', count >= KW_HOME_TOPICS.length);
 }
 
+/** First-visit password gate on the home page. This is a friendly doorbell, not real
+ *  security: the site is static, so the password lives in the client. Unlock state is
+ *  stored outside the visited-flag prefix so "Voortgang resetten" never re-locks it. */
+const KW_GATE_KEY = 'kw2026_unlocked';
+const KW_GATE_PASSWORD = 'verrassing';
+
+function kwInitGate() {
+  const gate = document.getElementById('gate');
+  if (!gate) return;
+
+  let unlocked = false;
+  try {
+    unlocked = localStorage.getItem(KW_GATE_KEY) === '1';
+  } catch (e) { /* localStorage unavailable — show the gate */ }
+
+  if (unlocked) {
+    gate.remove();
+    return;
+  }
+
+  document.body.style.overflow = 'hidden';
+  const form = document.getElementById('gateForm');
+  const input = document.getElementById('gateInput');
+  const hint = document.getElementById('gateHint');
+  if (input) input.focus();
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const value = (input.value || '').trim().toLowerCase();
+    if (value === KW_GATE_PASSWORD) {
+      try {
+        localStorage.setItem(KW_GATE_KEY, '1');
+      } catch (e) { /* ignore */ }
+      document.body.style.overflow = '';
+      gate.remove();
+      return;
+    }
+    gate.classList.remove('shake');
+    void gate.offsetWidth; // restart the shake animation
+    gate.classList.add('shake');
+    if (hint) hint.hidden = false;
+    input.select();
+  });
+}
+
+/** The mountain SVG fills a fixed-ratio box on desktop (no distortion, so the peak
+ *  nodes line up), and crops to fill the shorter decorative band on mobile. */
+function kwTuneMountain() {
+  const svg = document.querySelector('.mt-contour');
+  if (!svg) return;
+  const mobile = window.matchMedia('(max-width:820px)').matches;
+  svg.setAttribute('preserveAspectRatio', mobile ? 'xMidYMax slice' : 'none');
+}
+window.addEventListener('resize', kwTuneMountain);
+
 /** Reset all visited flags (used by the "reset" link on the home page). */
 function kwResetVisited() {
   try {
@@ -79,29 +135,120 @@ function kwResetVisited() {
 }
 
 /** Open/close the in-page 'meer informatie' modal (and any other modal-overlay). */
+let kwLastFocus = null;
+
+function kwTrapFocus(e, container) {
+  if (e.key !== 'Tab') return;
+  const focusable = container.querySelectorAll(
+    'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
 function kwOpenModal(id) {
   const el = document.getElementById(id);
   if (!el) return;
+  kwLastFocus = document.activeElement;
   el.hidden = false;
   document.body.style.overflow = 'hidden';
+  const card = el.querySelector('.modal-card');
+  if (card) {
+    el._trap = (e) => kwTrapFocus(e, card);
+    el.addEventListener('keydown', el._trap);
+    const target = card.querySelector('.modal-close') || card;
+    target.focus();
+  }
 }
 function kwCloseModal(id) {
   const el = document.getElementById(id);
   if (!el) return;
   el.hidden = true;
   document.body.style.overflow = '';
+  if (el._trap) {
+    el.removeEventListener('keydown', el._trap);
+    el._trap = null;
+  }
+  if (kwLastFocus && typeof kwLastFocus.focus === 'function') {
+    kwLastFocus.focus();
+    kwLastFocus = null;
+  }
 }
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    document.querySelectorAll('.modal-overlay:not([hidden])').forEach((el) => { el.hidden = true; });
-    document.body.style.overflow = '';
+    document.querySelectorAll('.modal-overlay:not([hidden])').forEach((el) => kwCloseModal(el.id));
   }
 });
+
+/** Lists rendered on the current page, so a page-level progress bar can sum them. */
+const KW_PAGE_LISTS = [];
+
+/** Recompute one group's progress bar (and roll it up into the page bar). */
+function kwUpdateProgress(listId) {
+  const list = document.getElementById(listId);
+  if (!list) return;
+  const boxes = list.querySelectorAll('input[type="checkbox"]');
+  let done = 0;
+  boxes.forEach((b) => { if (b.checked) done++; });
+  const total = boxes.length;
+
+  const wrap = document.getElementById('progress-' + listId);
+  if (wrap) {
+    const pct = total ? Math.round((done / total) * 100) : 0;
+    wrap.querySelector('.progress-fill').style.width = pct + '%';
+    wrap.querySelector('.count').textContent = done + ' / ' + total;
+    wrap.classList.toggle('is-complete', total > 0 && done === total);
+  }
+  kwUpdatePageProgress();
+}
+
+/** Sum every list on the page into the single top-of-page progress bar, if present. */
+function kwUpdatePageProgress() {
+  const page = document.getElementById('pageProgress');
+  if (!page) return;
+  let done = 0;
+  let total = 0;
+  KW_PAGE_LISTS.forEach((id) => {
+    const list = document.getElementById(id);
+    if (!list) return;
+    list.querySelectorAll('input[type="checkbox"]').forEach((b) => {
+      total++;
+      if (b.checked) done++;
+    });
+  });
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  page.querySelector('.progress-fill').style.width = pct + '%';
+  page.querySelector('.done').textContent = done + ' / ' + total;
+  page.classList.toggle('is-complete', total > 0 && done === total);
+  page.hidden = false;
+}
+
+/** Insert a progress bar between a checklist's group title and its items. */
+function kwAddGroupProgress(listId) {
+  const list = document.getElementById(listId);
+  if (!list || document.getElementById('progress-' + listId)) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'group-progress';
+  wrap.id = 'progress-' + listId;
+  wrap.innerHTML =
+    '<div class="progress-track"><div class="progress-fill"></div></div><span class="count"></span>';
+  list.parentNode.insertBefore(wrap, list);
+}
 
 /** Simple persisted checkbox lists (packing list / to-do's). */
 function kwInitChecklist(listId) {
   const list = document.getElementById(listId);
   if (!list) return;
+  if (!KW_PAGE_LISTS.includes(listId)) KW_PAGE_LISTS.push(listId);
+  kwAddGroupProgress(listId);
   const items = list.querySelectorAll('input[type="checkbox"][data-key]');
   items.forEach((box) => {
     const key = 'kw2026_check_' + listId + '_' + box.getAttribute('data-key');
@@ -114,9 +261,11 @@ function kwInitChecklist(listId) {
         localStorage.setItem(key, box.checked ? '1' : '0');
       } catch (e) { /* ignore */ }
       box.closest('.check-item').classList.toggle('checked', box.checked);
+      kwUpdateProgress(listId);
     });
   });
   kwInitCustomItems(listId);
+  kwUpdateProgress(listId);
 }
 
 /** Custom items a visitor added to a checklist (per list, stored per browser). */
@@ -173,6 +322,7 @@ function kwRenderCustomItem(listId, item) {
       localStorage.setItem(checkKey, box.checked ? '1' : '0');
     } catch (e) { /* ignore */ }
     li.classList.toggle('checked', box.checked);
+    kwUpdateProgress(listId);
   });
 
   removeBtn.addEventListener('click', () => {
@@ -181,6 +331,7 @@ function kwRenderCustomItem(listId, item) {
     try {
       localStorage.removeItem(checkKey);
     } catch (e) { /* ignore */ }
+    kwUpdateProgress(listId);
   });
 
   list.appendChild(li);
@@ -201,6 +352,7 @@ function kwAddChecklistItem(listId, inputId) {
   const item = { key: 'custom' + Date.now().toString(36), text };
   kwSaveCustomItems(listId, [...kwLoadCustomItems(listId), item]);
   kwRenderCustomItem(listId, item);
+  kwUpdateProgress(listId);
   input.value = '';
   input.focus();
 }

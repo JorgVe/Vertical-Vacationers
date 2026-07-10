@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>De to do's · Karwendel Höhenweg 2026</title>
+<meta name="description" content="Open beslissingen en actiepunten voor vertrek: beslissen, boeken & regelen, en nalezen.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="De to do's · Karwendel Höhenweg 2026">
+<meta property="og:description" content="Open beslissingen en actiepunten voor vertrek: beslissen, boeken & regelen, en nalezen.">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -13,6 +20,13 @@
 
 <div class="topbar">
   <a class="back" href="index.html">← Overzicht</a>
+  <nav class="topnav">
+    <a href="drive.html">Rit</a>
+    <a href="hotels.html">Hotels</a>
+    <a href="hike.html">Wandeling</a>
+    <a href="packinglist.html">Paklijst</a>
+    <a href="todos.html" aria-current="page">To do's</a>
+  </nav>
 </div>
 
 <header class="page-header">
@@ -21,8 +35,17 @@
   </div>
   <div class="eyebrow">Nog te regelen</div>
   <h1>De to do's</h1>
-  <p>Open beslissingen en actiepunten voor vertrek. Vink af wat gedaan is — lokaal per apparaat onthouden.</p>
+  <p>Open beslissingen en actiepunten voor vertrek. Vink af wat gedaan is.</p>
 </header>
+
+<div class="page-progress" id="pageProgress" hidden>
+  <div class="page-progress-label"><span>Afgevinkt</span><span class="done"></span></div>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+</div>
+
+<div class="local-note">
+  <span>ⓘ Deze lijst wordt <b>lokaal op jouw apparaat</b> bewaard — wat jij afvinkt zien de anderen niet. Stem definitieve keuzes en taakverdeling af in de groepschat.</span>
+</div>
 
 <main class="page-main">
 

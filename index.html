@@ -4,12 +4,33 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Karwendel Höhenweg 2026 · Vertical Vacationers</title>
+<meta name="description" content="Onze hüttentocht door het Karwendel — 16 tot 23 augustus 2026. Rit, hotels, wandeling, paklijst en to do's op één plek.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Karwendel Höhenweg 2026 · Vertical Vacationers">
+<meta property="og:description" content="Onze hüttentocht door het Karwendel — 16 tot 23 augustus 2026. Rit, hotels, wandeling, paklijst en to do's op één plek.">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="gate-kicker">Vertical Vacationers</div>
+    <h1 class="gate-title">Karwendel Höhenweg</h1>
+    <p class="gate-text">Deze reispagina is met een wachtwoord beveiligd. Ken je het toverwoord?</p>
+    <form class="gate-form" id="gateForm" autocomplete="off">
+      <input type="password" class="gate-input" id="gateInput" placeholder="Wachtwoord" aria-label="Wachtwoord" autocomplete="off" autofocus>
+      <button type="submit" class="gate-btn">Open</button>
+    </form>
+    <p class="gate-hint" id="gateHint" hidden>Bijna! Denk aan waar deze hele reis naartoe telt…</p>
+  </div>
+</div>
+<script>try{if(localStorage.getItem('kw2026_unlocked')==='1'){var g=document.getElementById('gate');if(g)g.hidden=true;}}catch(e){}</script>
 
 <header class="home-hero">
   <div class="kicker">Tirol · Österreich · Vertical Vacationers</div>
@@ -79,16 +100,39 @@
       </a>
 
       <div class="hiker-marker" id="hikerMarker" aria-hidden="true">
-        <img src="pictures/hiker.png" alt="">
+        <img src="pictures/hiker.webp" alt="" width="256" height="256">
       </div>
 
       <div class="surprise-wrap">
-        <div class="countdown" id="surpriseCountdown" aria-live="polite"></div>
+        <div class="countdown" id="surpriseCountdown"></div>
         <button type="button" class="surprise-btn" onclick="kwOpenModal('surpriseModal')">Verrassing!</button>
       </div>
 
     </div>
    </div>
+
+   <nav class="mt-list" aria-label="Onderwerpen">
+     <a href="drive.html">
+       <span class="mt-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M3 13l1.8-5.4A2 2 0 0 1 6.7 6h10.6a2 2 0 0 1 1.9 1.6L20 13"/><rect x="2.5" y="13" width="19" height="6" rx="1.5"/><circle cx="7" cy="19.5" r="1.6" fill="var(--forest)" stroke="none"/><circle cx="17" cy="19.5" r="1.6" fill="var(--forest)" stroke="none"/></svg></span>
+       <span class="mt-list-label">Rit</span>
+     </a>
+     <a href="hotels.html">
+       <span class="mt-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M3 10.5L12 4l9 6.5"/><path d="M5 10v9h14v-9"/><path d="M9 19v-5h6v5"/></svg></span>
+       <span class="mt-list-label">Hotels</span>
+     </a>
+     <a href="hike.html">
+       <span class="mt-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M4 19l4-9 3 5 2-3 5 7"/><circle cx="8" cy="6" r="2"/><path d="M6.5 9.5L8 8l2 1.5-1.5 3"/></svg></span>
+       <span class="mt-list-label">Wandeling</span>
+     </a>
+     <a href="packinglist.html">
+       <span class="mt-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M8 8V6a4 4 0 0 1 8 0v2"/><rect x="4.5" y="8" width="15" height="13" rx="2.5"/><path d="M9 12v3M15 12v3"/></svg></span>
+       <span class="mt-list-label">Paklijst</span>
+     </a>
+     <a href="todos.html">
+       <span class="mt-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 3.5V2.5h6v1"/><path d="M8.5 10l1.5 1.5L13 8.5M8.5 15l1.5 1.5 3-3"/></svg></span>
+       <span class="mt-list-label">To do's</span>
+     </a>
+   </nav>
   </section>
 
   <div class="home-actions">
@@ -105,7 +149,7 @@
 </footer>
 
 <div class="modal-overlay" id="infoModal" hidden onclick="if(event.target===this) kwCloseModal('infoModal')">
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle" tabindex="-1">
     <button type="button" class="modal-close" onclick="kwCloseModal('infoModal')" aria-label="Sluiten">✕</button>
     <h2 id="infoModalTitle">Meer informatie</h2>
     <ul class="info-links">
@@ -118,7 +162,7 @@
 </div>
 
 <div class="modal-overlay" id="surpriseModal" hidden onclick="if(event.target===this) kwCloseModal('surpriseModal')">
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="surpriseModalTitle">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="surpriseModalTitle" tabindex="-1">
     <button type="button" class="modal-close" onclick="kwCloseModal('surpriseModal')" aria-label="Sluiten">✕</button>
     <h2 id="surpriseModalTitle">Verrassing!</h2>
     <p class="modal-text">Deze verrassing is pas beschikbaar vanaf de start van de wandeling op 18 augustus. Kom er dan op terug!</p>
@@ -126,6 +170,6 @@
 </div>
 
 <script src="script.js"></script>
-<script>kwPlaceHiker(); kwStartCountdown();</script>
+<script>kwInitGate(); kwTuneMountain(); kwPlaceHiker(); kwStartCountdown();</script>
 </body>
 </html>

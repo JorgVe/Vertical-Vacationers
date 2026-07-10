@@ -4,25 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>De wandeling · Karwendel Höhenweg 2026</title>
+<meta name="description" content="Vier dagen wandelen van hut naar hut door het Karwendel, met hoogteprofiel en tijdsinschatting per dag.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="De wandeling · Karwendel Höhenweg 2026">
+<meta property="og:description" content="Vier dagen wandelen van hut naar hut door het Karwendel, met hoogteprofiel en tijdsinschatting per dag.">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<style>
-  .opt-cards{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:16px;}
-  .opt-card{background:var(--paper); border:1.5px solid var(--line); border-radius:14px; padding:20px; box-shadow:0 8px 18px rgba(20,20,10,.08);}
-  .opt-card h4{font-family:'Fraunces',serif; color:var(--forest); font-size:1.1rem;}
-  .opt-stats{display:flex; gap:18px; margin-top:10px;}
-  .opt-stats .num{font-family:'Fraunces',serif; font-weight:700; font-size:1.2rem; color:var(--red);}
-  .opt-stats .lab{font-size:.68rem; text-transform:uppercase; letter-spacing:.06em; color:#7a7362; font-weight:700;}
-  .opt-card a{display:inline-block; margin-top:12px; font-size:.82rem; font-weight:700; color:var(--forest-2); text-decoration:none; border-bottom:1.5px solid var(--gold-2);}
-  @media (max-width:700px){.opt-cards{grid-template-columns:1fr;}}
-</style>
 </head>
 <body>
 
 <div class="topbar">
   <a class="back" href="index.html">← Overzicht</a>
+  <nav class="topnav">
+    <a href="drive.html">Rit</a>
+    <a href="hotels.html">Hotels</a>
+    <a href="hike.html" aria-current="page">Wandeling</a>
+    <a href="packinglist.html">Paklijst</a>
+    <a href="todos.html">To do's</a>
+  </nav>
 </div>
 
 <header class="page-header">
@@ -37,7 +41,7 @@
 <main class="page-main">
 
   <div class="section-block">
-    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 0 · Maandag 17 augustus</span>
+    <span class="day-tag">Dag 0 · Maandag 17 augustus</span>
     <h2 style="margin-top:12px;">Acclimatisatiedag</h2>
     <p style="color:#5a5344; line-height:1.6;">Rustig inwandelen op hoogte voor we de hütten in trekken. Nog niet besloten welke route het wordt — twee opties liggen op tafel:</p>
     <div class="opt-cards">
@@ -61,38 +65,74 @@
   </div>
 
   <div class="section-block">
-    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 1 · Dinsdag 18 augustus</span>
+    <span class="day-tag">Dag 1 · Dinsdag 18 augustus</span>
     <h2 style="margin-top:12px;">Naar Karwendelhaus</h2>
     <p style="color:#5a5344; line-height:1.6;">De volledige route van vandaag, richting Karwendelhaus op 1.765 m.</p>
+    <div class="day-summary">
+      <div class="day-summary-photo"><img src="pictures/karwendelhaus.webp" alt="Karwendelhaus" width="1600" height="900" loading="lazy"></div>
+      <div class="day-summary-stats">
+        <div><div class="num">15,5 km</div><div class="lab">Afstand</div></div>
+        <div><div class="num">650 m</div><div class="lab">Stijgen</div></div>
+        <div><div class="num">40 m</div><div class="lab">Dalen</div></div>
+        <div><div class="num">4u35</div><div class="lab">Tijd</div></div>
+      </div>
+    </div>
     <div class="komoot-embed">
-      <iframe src="https://www.komoot.com/tour/3092174382/embed?share_token=aj9rI12AixGADKIpwTOmv3pwr8YVDVvqppGP7v3i8Op0CcoD2r&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" title="Wandelroute dag 1"></iframe>
+      <iframe src="https://www.komoot.com/tour/3092174382/embed?share_token=aj9rI12AixGADKIpwTOmv3pwr8YVDVvqppGP7v3i8Op0CcoD2r&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" loading="lazy" title="Wandelroute dag 1"></iframe>
     </div>
   </div>
 
   <div class="section-block">
-    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 2 · Woensdag 19 augustus</span>
+    <span class="day-tag">Dag 2 · Woensdag 19 augustus</span>
     <h2 style="margin-top:12px;">Naar Falkenhütte</h2>
     <p style="color:#5a5344; line-height:1.6;">De volledige route van vandaag, richting Falkenhütte op 1.848 m, voor de Laliderer Wände.</p>
+    <div class="day-summary">
+      <div class="day-summary-photo"><img src="pictures/falkenhutte.webp" alt="Falkenhütte" width="1049" height="700" loading="lazy"></div>
+      <div class="day-summary-stats">
+        <div><div class="num">8,9 km</div><div class="lab">Afstand</div></div>
+        <div><div class="num">500 m</div><div class="lab">Stijgen</div></div>
+        <div><div class="num">410 m</div><div class="lab">Dalen</div></div>
+        <div><div class="num">3u19</div><div class="lab">Tijd</div></div>
+      </div>
+    </div>
     <div class="komoot-embed">
-      <iframe src="https://www.komoot.com/tour/3092202368/embed?share_token=ahknapglo0RNVqBZ1hJ30JbaZk9NUjo5Y07dsrPgEUFiVocZT1&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" title="Wandelroute dag 2"></iframe>
+      <iframe src="https://www.komoot.com/tour/3092202368/embed?share_token=ahknapglo0RNVqBZ1hJ30JbaZk9NUjo5Y07dsrPgEUFiVocZT1&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" loading="lazy" title="Wandelroute dag 2"></iframe>
     </div>
   </div>
 
   <div class="section-block">
-    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 3 · Donderdag 20 augustus</span>
+    <span class="day-tag">Dag 3 · Donderdag 20 augustus</span>
     <h2 style="margin-top:12px;">Naar Lamsenjochhütte</h2>
     <p style="color:#5a5344; line-height:1.6;">De hoogste etappe, richting Lamsenjochhütte op 1.953 m.</p>
+    <div class="day-summary">
+      <div class="day-summary-photo"><img src="pictures/lamsenjochhutte.webp" alt="Lamsenjochhütte" width="1600" height="900" loading="lazy"></div>
+      <div class="day-summary-stats">
+        <div><div class="num">12,3 km</div><div class="lab">Afstand</div></div>
+        <div><div class="num">840 m</div><div class="lab">Stijgen</div></div>
+        <div><div class="num">730 m</div><div class="lab">Dalen</div></div>
+        <div><div class="num">4u53</div><div class="lab">Tijd</div></div>
+      </div>
+    </div>
     <div class="komoot-embed">
-      <iframe src="https://www.komoot.com/tour/3092265991/embed?share_token=aH4PxTiLkE1MWzFs5vlJjFQaNa7i5nhrjSCP6x7iaVzVckSFTy&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" title="Wandelroute dag 3"></iframe>
+      <iframe src="https://www.komoot.com/tour/3092265991/embed?share_token=aH4PxTiLkE1MWzFs5vlJjFQaNa7i5nhrjSCP6x7iaVzVckSFTy&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" loading="lazy" title="Wandelroute dag 3"></iframe>
     </div>
   </div>
 
   <div class="section-block">
-    <span class="day-tag" style="display:inline-block; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-size:.72rem; color:#fff; background:var(--forest); padding:5px 12px; border-radius:100px;">Dag 4 · Vrijdag 21 augustus</span>
+    <span class="day-tag">Dag 4 · Vrijdag 21 augustus</span>
     <h2 style="margin-top:12px;">Naar Schwaz</h2>
     <p style="color:#5a5344; line-height:1.6;">De laatste etappe: de afdaling van Lamsenjochhütte terug het Inntal in, naar Schwaz — het eindpunt van onze hüttentocht.</p>
+    <div class="day-summary">
+      <div class="day-summary-photo"><img src="pictures/Schwaz.webp" alt="Schwaz" width="754" height="435" loading="lazy"></div>
+      <div class="day-summary-stats">
+        <div><div class="num">11,8 km</div><div class="lab">Afstand</div></div>
+        <div><div class="num">0 m</div><div class="lab">Stijgen</div></div>
+        <div><div class="num">1.410 m</div><div class="lab">Dalen</div></div>
+        <div><div class="num">4u05</div><div class="lab">Tijd</div></div>
+      </div>
+    </div>
     <div class="komoot-embed">
-      <iframe src="https://www.komoot.com/tour/3092300373/embed?share_token=akOgeZmjjyuVLghE22BgNTVQ7q0emMssqiqU1SvfJzlqrm9FV0&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" title="Wandelroute dag 4"></iframe>
+      <iframe src="https://www.komoot.com/tour/3092300373/embed?share_token=akOgeZmjjyuVLghE22BgNTVQ7q0emMssqiqU1SvfJzlqrm9FV0&amp;hl=nl&amp;layout=classic&amp;profile=1" width="100%" height="560" frameborder="0" scrolling="no" loading="lazy" title="Wandelroute dag 4"></iframe>
     </div>
   </div>
 
