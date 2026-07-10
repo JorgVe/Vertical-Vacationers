@@ -144,6 +144,24 @@
 
 <div id="printBooklet" class="print-booklet"></div>
 
+<div class="topic-overlay" id="topicOverlay" hidden onclick="if(event.target===this) kwCloseTopic()">
+  <div class="topic-sheet" role="dialog" aria-modal="true" aria-label="Onderwerp" tabindex="-1">
+    <div class="topic-bar">
+      <nav class="topic-tabs" id="topicTabs" aria-label="Onderwerpen">
+        <button type="button" data-topic="drive" onclick="kwOpenTopic('drive')">Rit</button>
+        <button type="button" data-topic="hotels" onclick="kwOpenTopic('hotels')">Hotels</button>
+        <button type="button" data-topic="hike" onclick="kwOpenTopic('hike')">Wandeling</button>
+        <button type="button" data-topic="packinglist" onclick="kwOpenTopic('packinglist')">Paklijst</button>
+        <button type="button" data-topic="todos" onclick="kwOpenTopic('todos')">To do's</button>
+      </nav>
+      <button type="button" class="topic-close" onclick="kwCloseTopic()" aria-label="Sluiten">✕</button>
+    </div>
+    <div class="topic-scroll" id="topicScroll">
+      <div class="topic-content" id="topicContent"></div>
+    </div>
+  </div>
+</div>
+
 <footer class="site-footer">
   <b>Vertical Vacationers</b> · 16–23 augustus 2026 · Jorg · Sara · Freddie · Layla · Ward · Charlotte
 </footer>

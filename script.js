@@ -182,10 +182,167 @@ function kwCloseModal(id) {
     kwLastFocus = null;
   }
 }
+/** Toggle the mobile hamburger nav on a subpage topbar. */
+function kwToggleNav(btn) {
+  const bar = btn.closest('.topbar');
+  if (!bar) return;
+  const open = bar.classList.toggle('nav-open');
+  btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function kwCloseNav() {
+  document.querySelectorAll('.topbar.nav-open').forEach((bar) => {
+    bar.classList.remove('nav-open');
+    const btn = bar.querySelector('.nav-toggle');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  });
+}
+// Close the open hamburger menu when clicking anywhere outside a topbar.
+document.addEventListener('click', (e) => {
+  if (e.target.closest && e.target.closest('.topbar')) return;
+  kwCloseNav();
+});
+
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
     document.querySelectorAll('.modal-overlay:not([hidden])').forEach((el) => kwCloseModal(el.id));
+    kwCloseNav();
+    kwCloseTopic();
   }
+});
+
+/* ---------------- Topic pop-up overlay (home page) ---------------- */
+// Opening a topic from the home page loads that subpage's content into an overlay,
+// so the whole trip reads as one continuous flow. The topics stay real pages too
+// (print booklet, direct links, no-JS), so this is progressive enhancement.
+const KW_TOPIC_LABELS = {
+  drive: 'Rit', hotels: 'Hotels', hike: 'Wandeling', packinglist: 'Paklijst', todos: "To do's",
+};
+// Which checklists each topic page needs initialised once injected.
+const KW_TOPIC_CHECKLISTS = {
+  packinglist: ['list-docs', 'list-hut', 'list-clothes', 'list-gear', 'list-health'],
+  todos: ['list-decide', 'list-book', 'list-read'],
+};
+let kwTopicLastFocus = null;
+let kwTopicClosing = false;
+
+function kwTopicFromHref(href) {
+  if (!href) return null;
+  const name = href.split('/').pop().replace('.html', '');
+  return KW_HOME_TOPICS.includes(name) ? name : null;
+}
+
+async function kwOpenTopic(topic) {
+  const overlay = document.getElementById('topicOverlay');
+  const scroll = document.getElementById('topicScroll');
+  const content = document.getElementById('topicContent');
+  if (!overlay || !content) {
+    window.location.href = topic + '.html';
+    return;
+  }
+
+  const firstOpen = overlay.hidden;
+  if (firstOpen) {
+    kwTopicClosing = false;
+    kwTopicLastFocus = document.activeElement;
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+    overlay._trap = (e) => kwTrapFocus(e, overlay.querySelector('.topic-sheet'));
+    overlay.addEventListener('keydown', overlay._trap);
+    try {
+      history.pushState({ kwTopic: true }, '');
+    } catch (e) { /* history unavailable — overlay still works */ }
+  }
+
+  overlay.querySelectorAll('.topic-tabs button').forEach((b) => {
+    b.setAttribute('aria-current', b.dataset.topic === topic ? 'page' : 'false');
+  });
+  const activeTab = overlay.querySelector('.topic-tabs button[aria-current="page"]');
+  if (activeTab) activeTab.scrollIntoView({ block: 'nearest', inline: 'center' });
+
+  content.innerHTML = '<div class="topic-loading">Laden…</div>';
+
+  let doc;
+  try {
+    const res = await fetch(topic + '.html');
+    if (!res.ok) throw new Error('status ' + res.status);
+    doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+  } catch (e) {
+    // Fetch blocked (e.g. opened as a local file) — fall back to a real navigation.
+    kwCloseTopic({ silent: true });
+    window.location.href = topic + '.html';
+    return;
+  }
+
+  doc.body.querySelectorAll('.topbar, .site-footer, script, .modal-overlay, .gate').forEach((el) => el.remove());
+  content.innerHTML = doc.body.innerHTML;
+
+  // Re-run what each subpage's inline <script> would normally do.
+  kwMarkVisited(topic);
+  (KW_TOPIC_CHECKLISTS[topic] || []).forEach(kwInitChecklist);
+  kwPlaceHiker();
+  kwAppendTopicNext(topic);
+
+  if (scroll) scroll.scrollTop = 0;
+  const sheet = overlay.querySelector('.topic-sheet');
+  if (sheet) sheet.focus();
+}
+
+/** Append a "next topic" button so you can walk through the topics in order. */
+function kwAppendTopicNext(topic) {
+  const content = document.getElementById('topicContent');
+  if (!content) return;
+  const idx = KW_HOME_TOPICS.indexOf(topic);
+  const next = KW_HOME_TOPICS[(idx + 1) % KW_HOME_TOPICS.length];
+  const wrap = document.createElement('div');
+  wrap.className = 'topic-next';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.textContent = 'Volgende: ' + KW_TOPIC_LABELS[next] + ' →';
+  btn.addEventListener('click', () => kwOpenTopic(next));
+  wrap.appendChild(btn);
+  content.appendChild(wrap);
+}
+
+function kwCloseTopic(opts) {
+  opts = opts || {};
+  const overlay = document.getElementById('topicOverlay');
+  if (!overlay || overlay.hidden) return;
+
+  // Prefer unwinding our own history entry so the back button also closes it.
+  if (!opts.fromHistory && history.state && history.state.kwTopic) {
+    if (kwTopicClosing) return;
+    kwTopicClosing = true;
+    history.back();
+    return;
+  }
+
+  kwTopicClosing = false;
+  overlay.hidden = true;
+  document.body.style.overflow = '';
+  if (overlay._trap) {
+    overlay.removeEventListener('keydown', overlay._trap);
+    overlay._trap = null;
+  }
+  const content = document.getElementById('topicContent');
+  if (content) content.innerHTML = '';
+  if (!opts.silent && kwTopicLastFocus && typeof kwTopicLastFocus.focus === 'function') {
+    kwTopicLastFocus.focus();
+  }
+  kwTopicLastFocus = null;
+}
+window.addEventListener('popstate', () => kwCloseTopic({ fromHistory: true }));
+
+// Intercept home-page topic links (mountain nodes, mobile list, and links inside an
+// open topic) so they open in the overlay instead of navigating. Modifier-clicks and
+// middle-clicks fall through to normal browser behaviour (open in new tab).
+document.addEventListener('click', (e) => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const link = e.target.closest('.mt-node, .mt-list a, .topic-content a');
+  if (!link) return;
+  const topic = kwTopicFromHref(link.getAttribute('href'));
+  if (!topic) return;
+  e.preventDefault();
+  kwOpenTopic(topic);
 });
 
 /** Lists rendered on the current page, so a page-level progress bar can sum them. */
