@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leer ons kennen · Karwendel Höhenweg 2026</title>
+<meta name="description" content="De zes wandelaars stellen zichzelf voor: tempo, ervaring, dieet en wat handig is om van elkaar te weten onderweg.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Leer ons kennen · Karwendel Höhenweg 2026">
+<meta property="og:description" content="De zes wandelaars stellen zichzelf voor: tempo, ervaring, dieet en wat handig is om van elkaar te weten onderweg.">
+<meta property="og:image" content="og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="topbar">
+  <a class="back" href="index.html">← Overzicht</a>
+  <button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav" onclick="kwToggleNav(this)">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+  </button>
+  <nav class="topnav" id="primary-nav">
+    <a href="drive.html">Rit</a>
+    <a href="hotels.html">Hotels</a>
+    <a href="hike.html">Wandeling</a>
+    <a href="packinglist.html">Paklijst</a>
+    <a href="todos.html">To do's</a>
+  </nav>
+</div>
+
+<header class="page-header">
+  <div class="icon-wrap">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="8.5" r="2.5"/><path d="M15.5 14.2A5 5 0 0 1 20.5 19"/></svg>
+  </div>
+  <div class="eyebrow">De groep</div>
+  <h1>Leer ons kennen</h1>
+  <p>Zes wandelaars, één bergkam. Vertel de anderen wat handig is om te weten onderweg.</p>
+</header>
+
+<div class="local-note">
+  <span>ⓘ Iedereen kan alle kaarten <b>lezen</b>. Met je persoonlijke <b>pincode</b> bewerk je alleen je eigen kaart — wat je opslaat zien de anderen vanzelf. Vul niets in wat je liever privé houdt.</span>
+</div>
+
+<div class="local-note" id="profileNotice" hidden>
+  <span>⚙ Deze pagina is nog niet gekoppeld aan de database. Zie <b>SUPABASE_SETUP.md</b> en vul je gegevens in bovenaan <b>profiles.js</b>.</span>
+</div>
+
+<main class="page-main">
+  <div class="profile-grid" id="profileGrid"></div>
+</main>
+
+<footer class="site-footer">
+  <b>Vertical Vacationers</b> · 16–23 augustus 2026
+</footer>
+
+<div class="modal-overlay" id="profileModal" hidden onclick="if(event.target===this) kwCloseModal('profileModal')">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-label="Kaart bewerken" tabindex="-1">
+    <button type="button" class="modal-close" onclick="kwCloseModal('profileModal')" aria-label="Sluiten">✕</button>
+    <div id="profileModalBody"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script src="profiles.js"></script>
+<script>kwInitProfiles();</script>
+</body>
+</html>
