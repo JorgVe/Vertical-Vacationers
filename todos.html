@@ -61,6 +61,10 @@
       <li class="check-item"><input type="checkbox" id="td-prehotel" data-key="prehotel"><label for="td-prehotel">Beslissen of we een hotel boeken vóór de tocht</label></li>
       <li class="check-item"><input type="checkbox" id="td-posthotel" data-key="posthotel"><label for="td-posthotel">Beslissen of we een hotel boeken na de tocht</label></li>
     </ul>
+    <form class="add-item-row" onsubmit="event.preventDefault(); kwAddChecklistItem('list-decide','add-decide');">
+      <input type="text" class="add-item-input" id="add-decide" placeholder="Item toevoegen…">
+      <button type="submit">Toevoegen</button>
+    </form>
   </div>
 
   <div class="section-block">
@@ -72,6 +76,10 @@
       <li class="check-item"><input type="checkbox" id="td-insurance" data-key="insurance"><label for="td-insurance">Reis-/bergsportverzekering afsluiten of checken</label></li>
       <li class="check-item"><input type="checkbox" id="td-sleepingbag" data-key="sleepingbag"><label for="td-sleepingbag">Hüttenslaapzakken kopen/verzamelen (verplicht op alle 3 hütten)</label></li>
     </ul>
+    <form class="add-item-row" onsubmit="event.preventDefault(); kwAddChecklistItem('list-book','add-book');">
+      <input type="text" class="add-item-input" id="add-book" placeholder="Item toevoegen…">
+      <button type="submit">Toevoegen</button>
+    </form>
   </div>
 
   <div class="section-block">
@@ -82,6 +90,10 @@
       <li class="check-item"><input type="checkbox" id="td-packlist" data-key="packlist"><label for="td-packlist">Paklijst samen doorlopen (zie <a href="packinglist.html" style="color:var(--forest-2); font-weight:700;">De paklijst</a>)</label></li>
       <li class="check-item"><input type="checkbox" id="td-cash" data-key="cash"><label for="td-cash">Genoeg contant geld regelen — niet elke hut pint</label></li>
     </ul>
+    <form class="add-item-row" onsubmit="event.preventDefault(); kwAddChecklistItem('list-read','add-read');">
+      <input type="text" class="add-item-input" id="add-read" placeholder="Item toevoegen…">
+      <button type="submit">Toevoegen</button>
+    </form>
   </div>
 
 </main>

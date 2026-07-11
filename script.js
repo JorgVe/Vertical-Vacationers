@@ -2,6 +2,12 @@
 // Tracks which topic pages a visitor has opened (per-browser, via localStorage)
 // so the home page can grey out icons that have already been "besproken".
 
+// When a subpage is shown inside the home page's topic overlay (an iframe), hide its
+// own top nav and footer so only the content shows through the overlay.
+if (window.self !== window.top) {
+  document.documentElement.classList.add('kw-embedded');
+}
+
 const KW_PREFIX = 'kw2026_visited_';
 
 /** Call this on a subpage to mark its topic as visited. */
@@ -73,6 +79,29 @@ function kwPlaceHiker() {
  *  stored outside the visited-flag prefix so "Voortgang resetten" never re-locks it. */
 const KW_GATE_KEY = 'kw2026_unlocked';
 const KW_GATE_PASSWORD = 'verrassing';
+// A second, secret word ("Verrassing!") plays a surprise video instead of unlocking.
+const KW_GATE_SURPRISE = 'verrassing!';
+
+/** Reveal the surprise video over the gate, with a close button back to the prompt. */
+function kwRevealSurprise(input) {
+  if (document.querySelector('.gate-video')) return;
+  if (input) input.value = '';
+  const wrap = document.createElement('div');
+  wrap.className = 'gate-video';
+  wrap.innerHTML =
+    '<button type="button" class="gate-video-close" aria-label="Sluiten">✕</button>' +
+    '<div class="gate-video-frame">' +
+    '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=d3xjm7Q1a87oEmAf&amp;autoplay=1" ' +
+    'title="YouTube video player" frameborder="0" ' +
+    'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
+    'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>' +
+    '</div>';
+  wrap.querySelector('.gate-video-close').addEventListener('click', () => {
+    wrap.remove();
+    if (input) input.focus();
+  });
+  document.body.appendChild(wrap);
+}
 
 function kwInitGate() {
   const gate = document.getElementById('gate');
@@ -98,6 +127,10 @@ function kwInitGate() {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const value = (input.value || '').trim().toLowerCase();
+    if (value === KW_GATE_SURPRISE) {
+      kwRevealSurprise(input);
+      return;
+    }
     if (value === KW_GATE_PASSWORD) {
       try {
         localStorage.setItem(KW_GATE_KEY, '1');
@@ -211,19 +244,12 @@ document.addEventListener('keydown', (e) => {
 });
 
 /* ---------------- Topic pop-up overlay (home page) ---------------- */
-// Opening a topic from the home page loads that subpage's content into an overlay,
-// so the whole trip reads as one continuous flow. The topics stay real pages too
-// (print booklet, direct links, no-JS), so this is progressive enhancement.
-const KW_TOPIC_LABELS = {
-  drive: 'Rit', hotels: 'Hotels', hike: 'Wandeling', packinglist: 'Paklijst', todos: "To do's",
-};
-// Which checklists each topic page needs initialised once injected.
-const KW_TOPIC_CHECKLISTS = {
-  packinglist: ['list-docs', 'list-hut', 'list-clothes', 'list-gear', 'list-health'],
-  todos: ['list-decide', 'list-book', 'list-read'],
-};
+// Opening a topic from the home page shows that subpage inside an <iframe> overlay,
+// so the whole trip reads as one continuous flow — switch topics with the tabs without
+// ever leaving the home page. An iframe (rather than fetch) means this works the same
+// whether the site is opened from a web server, GitHub Pages, or a local file.
+// The topics stay real, standalone pages too (print booklet, direct links, no-JS).
 let kwTopicLastFocus = null;
-let kwTopicClosing = false;
 
 function kwTopicFromHref(href) {
   if (!href) return null;
@@ -231,113 +257,68 @@ function kwTopicFromHref(href) {
   return KW_HOME_TOPICS.includes(name) ? name : null;
 }
 
-async function kwOpenTopic(topic) {
+function kwOpenTopic(topic) {
   const overlay = document.getElementById('topicOverlay');
-  const scroll = document.getElementById('topicScroll');
-  const content = document.getElementById('topicContent');
-  if (!overlay || !content) {
+  const frame = document.getElementById('topicFrame');
+  if (!overlay || !frame) {
     window.location.href = topic + '.html';
     return;
   }
 
-  const firstOpen = overlay.hidden;
-  if (firstOpen) {
-    kwTopicClosing = false;
+  if (overlay.hidden) {
     kwTopicLastFocus = document.activeElement;
     overlay.hidden = false;
     document.body.style.overflow = 'hidden';
-    overlay._trap = (e) => kwTrapFocus(e, overlay.querySelector('.topic-sheet'));
-    overlay.addEventListener('keydown', overlay._trap);
-    try {
-      history.pushState({ kwTopic: true }, '');
-    } catch (e) { /* history unavailable — overlay still works */ }
   }
 
+  kwSetActiveTopicTab(topic);
+  frame.src = topic + '.html';
+}
+
+/** Highlight the tab for the topic currently shown, and scroll it into view. */
+function kwSetActiveTopicTab(topic) {
+  const overlay = document.getElementById('topicOverlay');
+  if (!overlay) return;
   overlay.querySelectorAll('.topic-tabs button').forEach((b) => {
     b.setAttribute('aria-current', b.dataset.topic === topic ? 'page' : 'false');
   });
   const activeTab = overlay.querySelector('.topic-tabs button[aria-current="page"]');
   if (activeTab) activeTab.scrollIntoView({ block: 'nearest', inline: 'center' });
-
-  content.innerHTML = '<div class="topic-loading">Laden…</div>';
-
-  let doc;
-  try {
-    const res = await fetch(topic + '.html');
-    if (!res.ok) throw new Error('status ' + res.status);
-    doc = new DOMParser().parseFromString(await res.text(), 'text/html');
-  } catch (e) {
-    // Fetch blocked (e.g. opened as a local file) — fall back to a real navigation.
-    kwCloseTopic({ silent: true });
-    window.location.href = topic + '.html';
-    return;
-  }
-
-  doc.body.querySelectorAll('.topbar, .site-footer, script, .modal-overlay, .gate').forEach((el) => el.remove());
-  content.innerHTML = doc.body.innerHTML;
-
-  // Re-run what each subpage's inline <script> would normally do.
-  kwMarkVisited(topic);
-  (KW_TOPIC_CHECKLISTS[topic] || []).forEach(kwInitChecklist);
-  kwPlaceHiker();
-  kwAppendTopicNext(topic);
-
-  if (scroll) scroll.scrollTop = 0;
-  const sheet = overlay.querySelector('.topic-sheet');
-  if (sheet) sheet.focus();
 }
 
-/** Append a "next topic" button so you can walk through the topics in order. */
-function kwAppendTopicNext(topic) {
-  const content = document.getElementById('topicContent');
-  if (!content) return;
-  const idx = KW_HOME_TOPICS.indexOf(topic);
-  const next = KW_HOME_TOPICS[(idx + 1) % KW_HOME_TOPICS.length];
-  const wrap = document.createElement('div');
-  wrap.className = 'topic-next';
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.textContent = 'Volgende: ' + KW_TOPIC_LABELS[next] + ' →';
-  btn.addEventListener('click', () => kwOpenTopic(next));
-  wrap.appendChild(btn);
-  content.appendChild(wrap);
-}
+// Keep the home page in sync with what the iframe is showing: move the hiker as topics
+// get marked visited, and re-highlight the tab if navigation happened inside the frame.
+(function () {
+  const frame = document.getElementById('topicFrame');
+  if (!frame) return;
+  frame.addEventListener('load', () => {
+    try {
+      kwPlaceHiker();
+      const path = frame.contentWindow.location.pathname.split('/').pop().replace('.html', '');
+      if (KW_HOME_TOPICS.includes(path)) kwSetActiveTopicTab(path);
+    } catch (e) { /* cross-origin or not ready — ignore */ }
+  });
+})();
 
-function kwCloseTopic(opts) {
-  opts = opts || {};
+function kwCloseTopic() {
   const overlay = document.getElementById('topicOverlay');
   if (!overlay || overlay.hidden) return;
-
-  // Prefer unwinding our own history entry so the back button also closes it.
-  if (!opts.fromHistory && history.state && history.state.kwTopic) {
-    if (kwTopicClosing) return;
-    kwTopicClosing = true;
-    history.back();
-    return;
-  }
-
-  kwTopicClosing = false;
   overlay.hidden = true;
   document.body.style.overflow = '';
-  if (overlay._trap) {
-    overlay.removeEventListener('keydown', overlay._trap);
-    overlay._trap = null;
-  }
-  const content = document.getElementById('topicContent');
-  if (content) content.innerHTML = '';
-  if (!opts.silent && kwTopicLastFocus && typeof kwTopicLastFocus.focus === 'function') {
+  const frame = document.getElementById('topicFrame');
+  if (frame) frame.removeAttribute('src'); // stop the page (and any Komoot map) loading
+  if (kwTopicLastFocus && typeof kwTopicLastFocus.focus === 'function') {
     kwTopicLastFocus.focus();
   }
   kwTopicLastFocus = null;
 }
-window.addEventListener('popstate', () => kwCloseTopic({ fromHistory: true }));
 
-// Intercept home-page topic links (mountain nodes, mobile list, and links inside an
-// open topic) so they open in the overlay instead of navigating. Modifier-clicks and
-// middle-clicks fall through to normal browser behaviour (open in new tab).
+// Intercept home-page topic links (mountain nodes and the mobile list) so they open in
+// the overlay instead of navigating. Modifier-clicks and middle-clicks fall through to
+// normal browser behaviour (open in new tab).
 document.addEventListener('click', (e) => {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-  const link = e.target.closest('.mt-node, .mt-list a, .topic-content a');
+  const link = e.target.closest('.mt-node, .mt-list a');
   if (!link) return;
   const topic = kwTopicFromHref(link.getAttribute('href'));
   if (!topic) return;
