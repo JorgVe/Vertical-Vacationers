@@ -1,4 +1,4 @@
-# Vertical Vacationers — Karwendel Höhenweg 2026
+# Schnapps and Schnitzels — Karwendel Höhenweg 2026
 
 Statische site met alle praktische info voor onze hüttentocht door het Karwendelgebergte (18–21 augustus 2026).
 

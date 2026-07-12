@@ -47,6 +47,13 @@ function kwStartCountdown() {
 /** Ordered topics along the home page mountain ridge. */
 const KW_HOME_TOPICS = ['drive', 'hotels', 'hike', 'packinglist', 'todos'];
 
+/* Topics that are external Notion pages: clicking them simply redirects the
+ * browser to the page (the <a href> on the node) instead of opening a built-in
+ * page or an embedded pop-up. Notion refuses to render inside an <iframe>, so a
+ * normal redirect — which uses your logged-in Notion session — is the reliable
+ * way in. The URLs live on the links in the HTML; change them there. */
+const KW_NOTION_TOPICS = ['packinglist', 'todos'];
+
 /** Hiker position for 0..5 topics visited — points along the ridge between the
  *  peaks (not directly under any icon), so the hiker reads as walking the trail. */
 const KW_HIKER_STEPS = [
@@ -74,77 +81,46 @@ function kwPlaceHiker() {
   hiker.classList.toggle('arrived', count >= KW_HOME_TOPICS.length);
 }
 
-/** First-visit password gate on the home page. This is a friendly doorbell, not real
- *  security: the site is static, so the password lives in the client. Unlock state is
- *  stored outside the visited-flag prefix so "Voortgang resetten" never re-locks it. */
-const KW_GATE_KEY = 'kw2026_unlocked';
-const KW_GATE_PASSWORD = 'verrassing';
-// A second, secret word ("Verrassing!") plays a surprise video instead of unlocking.
-const KW_GATE_SURPRISE = 'verrassing!';
+/* ---------------- Generic page pop-up (home page) ---------------- */
+// The "Meer informatie" cards open their page inside an <iframe> overlay instead of
+// navigating away, so the whole site reads as one place. The pages stay real,
+// standalone URLs too (modifier-click / middle-click still open them in a new tab).
+let kwPageLastFocus = null;
 
-/** Reveal the surprise video over the gate, with a close button back to the prompt. */
-function kwRevealSurprise(input) {
-  if (document.querySelector('.gate-video')) return;
-  if (input) input.value = '';
-  const wrap = document.createElement('div');
-  wrap.className = 'gate-video';
-  wrap.innerHTML =
-    '<button type="button" class="gate-video-close" aria-label="Sluiten">✕</button>' +
-    '<div class="gate-video-frame">' +
-    '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=d3xjm7Q1a87oEmAf&amp;autoplay=1" ' +
-    'title="YouTube video player" frameborder="0" ' +
-    'allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ' +
-    'referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>' +
-    '</div>';
-  wrap.querySelector('.gate-video-close').addEventListener('click', () => {
-    wrap.remove();
-    if (input) input.focus();
-  });
-  document.body.appendChild(wrap);
+function kwOpenPage(e, url, title) {
+  if (e) {
+    // Let the browser handle new-tab intents (cmd/ctrl/shift/alt or middle click).
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return true;
+    e.preventDefault();
+  }
+  const overlay = document.getElementById('pageOverlay');
+  const frame = document.getElementById('pageFrame');
+  if (!overlay || !frame) {
+    if (url) window.location.href = url; // no-JS / missing overlay fallback
+    return false;
+  }
+  const titleEl = document.getElementById('pageOverlayTitle');
+  if (titleEl) titleEl.textContent = title || '';
+  if (overlay.hidden) {
+    kwPageLastFocus = document.activeElement;
+    overlay.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  frame.src = url;
+  const sheet = overlay.querySelector('.topic-sheet');
+  if (sheet) sheet.focus();
+  return false;
 }
 
-function kwInitGate() {
-  const gate = document.getElementById('gate');
-  if (!gate) return;
-
-  let unlocked = false;
-  try {
-    unlocked = localStorage.getItem(KW_GATE_KEY) === '1';
-  } catch (e) { /* localStorage unavailable — show the gate */ }
-
-  if (unlocked) {
-    gate.remove();
-    return;
-  }
-
-  document.body.style.overflow = 'hidden';
-  const form = document.getElementById('gateForm');
-  const input = document.getElementById('gateInput');
-  const hint = document.getElementById('gateHint');
-  if (input) input.focus();
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const value = (input.value || '').trim().toLowerCase();
-    if (value === KW_GATE_SURPRISE) {
-      kwRevealSurprise(input);
-      return;
-    }
-    if (value === KW_GATE_PASSWORD) {
-      try {
-        localStorage.setItem(KW_GATE_KEY, '1');
-      } catch (e) { /* ignore */ }
-      document.body.style.overflow = '';
-      gate.remove();
-      return;
-    }
-    gate.classList.remove('shake');
-    void gate.offsetWidth; // restart the shake animation
-    gate.classList.add('shake');
-    if (hint) hint.hidden = false;
-    input.select();
-  });
+function kwClosePage() {
+  const overlay = document.getElementById('pageOverlay');
+  if (!overlay || overlay.hidden) return;
+  overlay.hidden = true;
+  document.body.style.overflow = '';
+  const frame = document.getElementById('pageFrame');
+  if (frame) frame.removeAttribute('src'); // stop the page loading
+  if (kwPageLastFocus && typeof kwPageLastFocus.focus === 'function') kwPageLastFocus.focus();
+  kwPageLastFocus = null;
 }
 
 /** The mountain SVG fills a fixed-ratio box on desktop (no distortion, so the peak
@@ -165,6 +141,22 @@ function kwResetVisited() {
       .forEach((k) => localStorage.removeItem(k));
   } catch (e) { /* ignore */ }
   kwPlaceHiker();
+  kwRefreshResetButton();
+}
+
+/** True if the visitor has opened at least one topic — i.e. there is progress to reset. */
+function kwHasProgress() {
+  try {
+    return Object.keys(localStorage).some((k) => k.startsWith(KW_PREFIX));
+  } catch (e) {
+    return false;
+  }
+}
+
+/** Show the "Voortgang resetten" row only when there is something to reset. */
+function kwRefreshResetButton() {
+  const row = document.getElementById('resetRow');
+  if (row) row.hidden = !kwHasProgress();
 }
 
 /** Open/close the in-page 'meer informatie' modal (and any other modal-overlay). */
@@ -240,6 +232,7 @@ document.addEventListener('keydown', (e) => {
     document.querySelectorAll('.modal-overlay:not([hidden])').forEach((el) => kwCloseModal(el.id));
     kwCloseNav();
     kwCloseTopic();
+    kwClosePage();
   }
 });
 
@@ -320,183 +313,21 @@ document.addEventListener('click', (e) => {
   if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
   const link = e.target.closest('.mt-node, .mt-list a');
   if (!link) return;
-  const topic = kwTopicFromHref(link.getAttribute('href'));
+  // Prefer an explicit data-topic (the Notion topics point href at Notion itself).
+  const topic = link.getAttribute('data-topic') || kwTopicFromHref(link.getAttribute('href'));
   if (!topic) return;
+  if (KW_NOTION_TOPICS.includes(topic)) {
+    kwMarkVisited(topic); // record the visit, then let the browser follow the href (redirect)
+    return;
+  }
+  if (!KW_HOME_TOPICS.includes(topic)) return;
   e.preventDefault();
   kwOpenTopic(topic);
 });
 
-/** Lists rendered on the current page, so a page-level progress bar can sum them. */
-const KW_PAGE_LISTS = [];
-
-/** Recompute one group's progress bar (and roll it up into the page bar). */
-function kwUpdateProgress(listId) {
-  const list = document.getElementById(listId);
-  if (!list) return;
-  const boxes = list.querySelectorAll('input[type="checkbox"]');
-  let done = 0;
-  boxes.forEach((b) => { if (b.checked) done++; });
-  const total = boxes.length;
-
-  const wrap = document.getElementById('progress-' + listId);
-  if (wrap) {
-    const pct = total ? Math.round((done / total) * 100) : 0;
-    wrap.querySelector('.progress-fill').style.width = pct + '%';
-    wrap.querySelector('.count').textContent = done + ' / ' + total;
-    wrap.classList.toggle('is-complete', total > 0 && done === total);
-  }
-  kwUpdatePageProgress();
-}
-
-/** Sum every list on the page into the single top-of-page progress bar, if present. */
-function kwUpdatePageProgress() {
-  const page = document.getElementById('pageProgress');
-  if (!page) return;
-  let done = 0;
-  let total = 0;
-  KW_PAGE_LISTS.forEach((id) => {
-    const list = document.getElementById(id);
-    if (!list) return;
-    list.querySelectorAll('input[type="checkbox"]').forEach((b) => {
-      total++;
-      if (b.checked) done++;
-    });
-  });
-  const pct = total ? Math.round((done / total) * 100) : 0;
-  page.querySelector('.progress-fill').style.width = pct + '%';
-  page.querySelector('.done').textContent = done + ' / ' + total;
-  page.classList.toggle('is-complete', total > 0 && done === total);
-  page.hidden = false;
-}
-
-/** Insert a progress bar between a checklist's group title and its items. */
-function kwAddGroupProgress(listId) {
-  const list = document.getElementById(listId);
-  if (!list || document.getElementById('progress-' + listId)) return;
-  const wrap = document.createElement('div');
-  wrap.className = 'group-progress';
-  wrap.id = 'progress-' + listId;
-  wrap.innerHTML =
-    '<div class="progress-track"><div class="progress-fill"></div></div><span class="count"></span>';
-  list.parentNode.insertBefore(wrap, list);
-}
-
-/** Simple persisted checkbox lists (packing list / to-do's). */
-function kwInitChecklist(listId) {
-  const list = document.getElementById(listId);
-  if (!list) return;
-  if (!KW_PAGE_LISTS.includes(listId)) KW_PAGE_LISTS.push(listId);
-  kwAddGroupProgress(listId);
-  const items = list.querySelectorAll('input[type="checkbox"][data-key]');
-  items.forEach((box) => {
-    const key = 'kw2026_check_' + listId + '_' + box.getAttribute('data-key');
-    try {
-      box.checked = localStorage.getItem(key) === '1';
-    } catch (e) { /* ignore */ }
-    box.closest('.check-item').classList.toggle('checked', box.checked);
-    box.addEventListener('change', () => {
-      try {
-        localStorage.setItem(key, box.checked ? '1' : '0');
-      } catch (e) { /* ignore */ }
-      box.closest('.check-item').classList.toggle('checked', box.checked);
-      kwUpdateProgress(listId);
-    });
-  });
-  kwInitCustomItems(listId);
-  kwUpdateProgress(listId);
-}
-
-/** Custom items a visitor added to a checklist (per list, stored per browser). */
-function kwCustomItemsKey(listId) {
-  return 'kw2026_custom_' + listId;
-}
-
-function kwLoadCustomItems(listId) {
-  try {
-    return JSON.parse(localStorage.getItem(kwCustomItemsKey(listId)) || '[]');
-  } catch (e) {
-    return [];
-  }
-}
-
-function kwSaveCustomItems(listId, items) {
-  try {
-    localStorage.setItem(kwCustomItemsKey(listId), JSON.stringify(items));
-  } catch (e) { /* ignore */ }
-}
-
-function kwRenderCustomItem(listId, item) {
-  const list = document.getElementById(listId);
-  if (!list) return;
-
-  const li = document.createElement('li');
-  li.className = 'check-item custom-item';
-
-  const box = document.createElement('input');
-  box.type = 'checkbox';
-  box.id = listId + '-' + item.key;
-  box.dataset.key = item.key;
-
-  const label = document.createElement('label');
-  label.setAttribute('for', box.id);
-  label.textContent = item.text;
-
-  const removeBtn = document.createElement('button');
-  removeBtn.type = 'button';
-  removeBtn.className = 'remove-item-btn';
-  removeBtn.setAttribute('aria-label', 'Verwijderen');
-  removeBtn.textContent = '✕';
-
-  li.append(box, label, removeBtn);
-
-  const checkKey = 'kw2026_check_' + listId + '_' + item.key;
-  try {
-    box.checked = localStorage.getItem(checkKey) === '1';
-  } catch (e) { /* ignore */ }
-  li.classList.toggle('checked', box.checked);
-
-  box.addEventListener('change', () => {
-    try {
-      localStorage.setItem(checkKey, box.checked ? '1' : '0');
-    } catch (e) { /* ignore */ }
-    li.classList.toggle('checked', box.checked);
-    kwUpdateProgress(listId);
-  });
-
-  removeBtn.addEventListener('click', () => {
-    li.remove();
-    kwSaveCustomItems(listId, kwLoadCustomItems(listId).filter((i) => i.key !== item.key));
-    try {
-      localStorage.removeItem(checkKey);
-    } catch (e) { /* ignore */ }
-    kwUpdateProgress(listId);
-  });
-
-  list.appendChild(li);
-}
-
-/** Render any custom items a visitor previously added to this list. */
-function kwInitCustomItems(listId) {
-  kwLoadCustomItems(listId).forEach((item) => kwRenderCustomItem(listId, item));
-}
-
-/** Add a new item to a checklist from its 'add item' input. */
-function kwAddChecklistItem(listId, inputId) {
-  const input = document.getElementById(inputId);
-  if (!input) return;
-  const text = input.value.trim();
-  if (!text) return;
-
-  const item = { key: 'custom' + Date.now().toString(36), text };
-  kwSaveCustomItems(listId, [...kwLoadCustomItems(listId), item]);
-  kwRenderCustomItem(listId, item);
-  kwUpdateProgress(listId);
-  input.value = '';
-  input.focus();
-}
-
-/** The 5 topic pages compiled into the printable booklet, in reading order. */
-const KW_BOOKLET_PAGES = ['drive.html', 'hotels.html', 'hike.html', 'packinglist.html', 'todos.html'];
+/** The topic pages compiled into the printable booklet, in reading order.
+ *  (Paklijst and To do's now live in Notion, so they're not part of the booklet.) */
+const KW_BOOKLET_PAGES = ['drive.html', 'hotels.html', 'hike.html'];
 
 /** Fetch one topic page and turn its header + content into a booklet section. */
 async function kwBuildBookletSection(url) {
@@ -531,12 +362,12 @@ async function kwBuildBookletSection(url) {
 async function kwPrintBooklet() {
   const container = document.getElementById('printBooklet');
   const btn = document.querySelector('.print-btn');
+  // The label may live in a child span (card layout) so we don't wipe the icon.
+  const label = btn ? (btn.querySelector('.btn-label') || btn) : null;
   if (!container) return;
 
-  if (btn) {
-    btn.disabled = true;
-    btn.textContent = 'Boekje wordt samengesteld…';
-  }
+  if (btn) btn.disabled = true;
+  if (label) label.textContent = 'Boekje wordt samengesteld…';
 
   try {
     const sections = [];
@@ -545,7 +376,7 @@ async function kwPrintBooklet() {
     }
     container.innerHTML =
       '<section class="booklet-cover">' +
-      '<div class="booklet-cover-kicker">Vertical Vacationers</div>' +
+      '<div class="booklet-cover-kicker">Schnapps and Schnitzels</div>' +
       '<h1>Karwendel Höhenweg</h1>' +
       '<div class="booklet-cover-dates">16 – 23 augustus 2026</div>' +
       '</section>' +
@@ -554,9 +385,7 @@ async function kwPrintBooklet() {
   } catch (e) {
     alert('Kon het boekje niet samenstellen. Dit werkt alleen als de site online staat, niet als je index.html lokaal als bestand opent.');
   } finally {
-    if (btn) {
-      btn.disabled = false;
-      btn.textContent = 'Print reisboekje';
-    }
+    if (btn) btn.disabled = false;
+    if (label) label.textContent = 'Print reisboekje';
   }
 }

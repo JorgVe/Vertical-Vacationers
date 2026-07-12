@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Karwendel Höhenweg 2026 · Vertical Vacationers</title>
+<title>Karwendel Höhenweg 2026 · Schnapps and Schnitzels</title>
 <meta name="description" content="Onze hüttentocht door het Karwendel — 16 tot 23 augustus 2026. Rit, hotels, wandeling, paklijst en to do's op één plek.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Karwendel Höhenweg 2026 · Vertical Vacationers">
+<meta property="og:title" content="Karwendel Höhenweg 2026 · Schnapps and Schnitzels">
 <meta property="og:description" content="Onze hüttentocht door het Karwendel — 16 tot 23 augustus 2026. Rit, hotels, wandeling, paklijst en to do's op één plek.">
 <meta property="og:image" content="og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -14,26 +14,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700;9..144,900&family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
 
-<div class="gate" id="gate">
-  <div class="gate-card">
-    <div class="gate-kicker">Vertical Vacationers</div>
-    <h1 class="gate-title">Karwendel Höhenweg</h1>
-    <p class="gate-text">Deze reispagina is met een wachtwoord beveiligd. Ken je het toverwoord?</p>
-    <form class="gate-form" id="gateForm" autocomplete="off">
-      <input type="password" class="gate-input" id="gateInput" placeholder="Wachtwoord" aria-label="Wachtwoord" autocomplete="off" autofocus>
-      <button type="submit" class="gate-btn">Open</button>
-    </form>
-    <p class="gate-hint" id="gateHint" hidden>Bijna! Denk aan waar deze hele reis naartoe telt…</p>
-  </div>
-</div>
-<script>try{if(localStorage.getItem('kw2026_unlocked')==='1'){var g=document.getElementById('gate');if(g)g.hidden=true;}}catch(e){}</script>
-
 <header class="home-hero">
-  <div class="kicker">Tirol · Österreich · Vertical Vacationers</div>
+  <div class="kicker">Tirol · Österreich · Schnapps and Schnitzels</div>
   <div class="dates-badge">16 — 23 augustus 2026</div>
 </header>
 
@@ -85,14 +71,14 @@
         </span>
       </a>
 
-      <a class="mt-node" data-topic="packinglist" href="packinglist.html" style="left:70.8%; top:48.75%;">
+      <a class="mt-node" data-topic="packinglist" href="https://app.notion.com/p/Packing-list-31c5d8066162808b98edd8fb2898de70" style="left:70.8%; top:48.75%;">
         <span class="mt-label">Paklijst</span>
         <span class="mt-icon">
           <svg viewBox="0 0 24 24"><path d="M8 8V6a4 4 0 0 1 8 0v2"/><rect x="4.5" y="8" width="15" height="13" rx="2.5"/><path d="M9 12v3M15 12v3"/></svg>
         </span>
       </a>
 
-      <a class="mt-node" data-topic="todos" href="todos.html" style="left:91.7%; top:63.75%;">
+      <a class="mt-node" data-topic="todos" href="https://app.notion.com/p/Huttentocht-2026-3135d80661628060a652f41e90de5022" style="left:91.7%; top:63.75%;">
         <span class="mt-label">To do's</span>
         <span class="mt-icon">
           <svg viewBox="0 0 24 24"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 3.5V2.5h6v1"/><path d="M8.5 10l1.5 1.5L13 8.5M8.5 15l1.5 1.5 3-3"/></svg>
@@ -124,28 +110,53 @@
        <span class="mt-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M4 19l4-9 3 5 2-3 5 7"/><circle cx="8" cy="6" r="2"/><path d="M6.5 9.5L8 8l2 1.5-1.5 3"/></svg></span>
        <span class="mt-list-label">Wandeling</span>
      </a>
-     <a href="packinglist.html">
+     <a href="https://app.notion.com/p/Packing-list-31c5d8066162808b98edd8fb2898de70" data-topic="packinglist">
        <span class="mt-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><path d="M8 8V6a4 4 0 0 1 8 0v2"/><rect x="4.5" y="8" width="15" height="13" rx="2.5"/><path d="M9 12v3M15 12v3"/></svg></span>
        <span class="mt-list-label">Paklijst</span>
      </a>
-     <a href="todos.html">
+     <a href="https://app.notion.com/p/Huttentocht-2026-3135d80661628060a652f41e90de5022" data-topic="todos">
        <span class="mt-list-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.7"><rect x="5" y="3.5" width="14" height="17" rx="2"/><path d="M9 3.5V2.5h6v1"/><path d="M8.5 10l1.5 1.5L13 8.5M8.5 15l1.5 1.5 3-3"/></svg></span>
        <span class="mt-list-label">To do's</span>
      </a>
    </nav>
   </section>
 
-  <div class="home-actions">
-    <button type="button" class="reset-btn" onclick="kwResetVisited()">Voortgang resetten</button>
-    <button type="button" class="reset-btn print-btn" onclick="kwPrintBooklet()">Print reisboekje</button>
-    <button type="button" class="more-info-btn" onclick="kwOpenModal('infoModal')">Meer informatie</button>
-  </div>
+  <section class="extras" aria-label="Meer">
+    <div class="extras-head">
+      <div class="eyebrow">Onderweg &amp; ontspanning</div>
+      <h2>Meer informatie</h2>
+    </div>
+    <div class="extras-grid">
+      <a class="extra-card" href="gettoknow.html" onclick="return kwOpenPage(event,'gettoknow.html','Leer ons kennen')">
+        <span class="extra-icon"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="8.5" r="2.5"/><path d="M15.5 14.2A5 5 0 0 1 20.5 19"/></svg></span>
+        <span class="extra-text"><b>Leer ons kennen</b><small>Wie loopt er mee?</small></span>
+        <span class="extra-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="extra-card" href="phrasebook.html" onclick="return kwOpenPage(event,'phrasebook.html','Handige zinnen')">
+        <span class="extra-icon"><svg viewBox="0 0 24 24"><path d="M4 5h10v8H8l-3 3v-3H4z"/><path d="M10 13v3a2 2 0 0 0 2 2h4l3 3v-3h1v-8h-6"/></svg></span>
+        <span class="extra-text"><b>Handige zinnen</b><small>Onmisbaar (en fout) Duits</small></span>
+        <span class="extra-arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="extra-card" href="animals.html" onclick="return kwOpenPage(event,'animals.html','Dieren onderweg')">
+        <span class="extra-icon"><svg viewBox="0 0 24 24"><path d="M2 14c2.6-3.6 5.2-3.6 7.8 0 2.6-3.6 5.2-3.6 7.8 0"/><path d="M15 8c1.3-1.8 2.7-1.8 4 0"/></svg></span>
+        <span class="extra-text"><b>Dieren onderweg</b><small>Wie kom je tegen?</small></span>
+        <span class="extra-arrow" aria-hidden="true">→</span>
+      </a>
+      <button type="button" class="extra-card print-btn" onclick="kwPrintBooklet()">
+        <span class="extra-icon"><svg viewBox="0 0 24 24"><path d="M6 9V3.5h12V9"/><rect x="4.5" y="9" width="15" height="8" rx="1.5"/><path d="M7 17v3.5h10V17"/><path d="M16 12.5h.01"/></svg></span>
+        <span class="extra-text"><b class="btn-label">Print reisboekje</b><small>Alles op papier</small></span>
+        <span class="extra-arrow" aria-hidden="true">→</span>
+      </button>
+      <button type="button" class="extra-card" onclick="kwOpenModal('infoModal')">
+        <span class="extra-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 7.5h.01"/></svg></span>
+        <span class="extra-text"><b>Links &amp; bronnen</b><small>Notion, training &amp; boeking</small></span>
+        <span class="extra-arrow" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </section>
 
-  <div class="getto-cta">
-    <a class="getto-btn" href="gettoknow.html">
-      <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="8.5" r="2.5"/><path d="M15.5 14.2A5 5 0 0 1 20.5 19"/></svg>
-      Leer ons kennen
-    </a>
+  <div class="reset-row" id="resetRow" hidden>
+    <button type="button" class="reset-btn" onclick="kwResetVisited()">Voortgang resetten</button>
   </div>
 </main>
 
@@ -158,8 +169,6 @@
         <button type="button" data-topic="drive" onclick="kwOpenTopic('drive')">Rit</button>
         <button type="button" data-topic="hotels" onclick="kwOpenTopic('hotels')">Hotels</button>
         <button type="button" data-topic="hike" onclick="kwOpenTopic('hike')">Wandeling</button>
-        <button type="button" data-topic="packinglist" onclick="kwOpenTopic('packinglist')">Paklijst</button>
-        <button type="button" data-topic="todos" onclick="kwOpenTopic('todos')">To do's</button>
       </nav>
       <button type="button" class="topic-close" onclick="kwCloseTopic()" aria-label="Sluiten">✕</button>
     </div>
@@ -167,8 +176,18 @@
   </div>
 </div>
 
+<div class="topic-overlay" id="pageOverlay" hidden onclick="if(event.target===this) kwClosePage()">
+  <div class="topic-sheet" role="dialog" aria-modal="true" aria-label="Pagina" tabindex="-1">
+    <div class="topic-bar">
+      <span class="topic-title" id="pageOverlayTitle"></span>
+      <button type="button" class="topic-close" onclick="kwClosePage()" aria-label="Sluiten">✕</button>
+    </div>
+    <iframe class="topic-frame" id="pageFrame" title="Pagina"></iframe>
+  </div>
+</div>
+
 <footer class="site-footer">
-  <b>Vertical Vacationers</b> · 16–23 augustus 2026 · Jorg · Sara · Freddie · Layla · Ward · Charlotte
+  <b>Schnapps and Schnitzels</b> · 16–23 augustus 2026 · Jorg · Sara · Freddie · Layla · Ward · Charlotte
 </footer>
 
 <div class="modal-overlay" id="infoModal" hidden onclick="if(event.target===this) kwCloseModal('infoModal')">
@@ -192,7 +211,7 @@
   </div>
 </div>
 
-<script src="script.js"></script>
-<script>kwInitGate(); kwTuneMountain(); kwPlaceHiker(); kwStartCountdown();</script>
+<script src="script.js?v=5"></script>
+<script>kwTuneMountain(); kwPlaceHiker(); kwStartCountdown(); kwRefreshResetButton();</script>
 </body>
 </html>

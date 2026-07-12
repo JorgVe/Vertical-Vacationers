@@ -18,17 +18,42 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
  *  into the database (profiles + profile_pins tables). */
 const KW_PEOPLE = ['Jorg', 'Sara', 'Freddie', 'Layla', 'Ward', 'Charlotte'];
 
+/** Totemnamen in scoutingstijl: een bijvoeglijk naamwoord + een bergdier.
+ *  Kies er één uit op je kaart. Uitbreiden? Voeg gewoon een regel toe. */
+const KW_TOTEM_NAMES = [
+  'Dappere Steenbok',
+  'Wijze Marmot',
+  'Snelle Gems',
+  'Stille Lynx',
+  'Trotse Steenarend',
+  'Vrolijke Alpenkauw',
+  'Nieuwsgierige Vos',
+  'Behendige Sneeuwhaas',
+  'Woeste Lammergier',
+  'Kalme Alpensalamander',
+  'Sterke Edelhert',
+  'Wakkere Hermelijn',
+  'Zachte Ree',
+  'Stoere Oehoe',
+  'Gouden Adelaar',
+  'Vurige Vos',
+  'Slimme Marmot',
+  'IJzeren Steenbok',
+  'Wilde Gems',
+  'Nobele Lynx',
+  'Zwierige Zwaluw',
+  'Vastberaden Bergeend',
+  'Rustige Rendier',
+  'Fiere Valk',
+];
+
 /** The fields on each card, in display + form order. `type` drives the input used
  *  in the edit form; `select` fields render a dropdown from `options`. To add or
  *  change a field, edit this list — nothing else needs to change. */
 const KW_PROFILE_FIELDS = [
-  { key: 'bio',      label: 'Over mij',                     type: 'textarea', placeholder: 'Vertel kort iets over jezelf…' },
-  { key: 'tempo',    label: 'Mijn tempo',                   type: 'select',   options: ['Rustig aan', 'Gemiddeld', 'Stevig doorstappen'] },
-  { key: 'ervaring', label: 'Wandelervaring',               type: 'text',     placeholder: 'Bijv. eerste meerdaagse / af en toe / veel' },
-  { key: 'dieet',    label: 'Dieet & allergieën',           type: 'text',     placeholder: 'Bijv. vegetarisch, notenallergie…' },
-  { key: 'medisch',  label: 'Goed om te weten',             type: 'text',     placeholder: 'Bijv. gevoelige knieën, hoogtevrees, blaren…' },
-  { key: 'meenemen', label: 'Wat ik meeneem voor de groep', type: 'text',     placeholder: 'Bijv. EHBO-kit, kaart, powerbank…' },
-  { key: 'snurk',    label: 'Snurk-alarm (voor de dorms)',  type: 'select',   options: ['Nee', 'Een beetje', 'Ja — neem oordoppen mee 😴'] },
+  { key: 'bio',   label: 'Over mij',                    type: 'textarea', placeholder: 'Vertel kort iets over jezelf…' },
+  { key: 'totem', label: 'Totemnaam',                   type: 'select',   options: KW_TOTEM_NAMES },
+  { key: 'snurk', label: 'Snurk-alarm (voor de dorms)', type: 'select',   options: ['Nee', 'Een beetje', 'Ja — neem oordoppen mee 😴'] },
 ];
 
 /** True once the CONFIG block above has real values. */
